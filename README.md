@@ -1,5 +1,2 @@
-this is the first commit.
+AutoWare coreplanning without ROS.
 
-this is the second commit.
-
-this is what singpilot_computer add.
