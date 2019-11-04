@@ -22,12 +22,11 @@
 #include <queue>
 #include <string>
 #include <chrono>
+#include <algorithm>
 
-#include <ros/ros.h>
-#include <tf/tf.h>
-#include <nav_msgs/OccupancyGrid.h>
-#include <geometry_msgs/PoseArray.h>
-#include <nav_msgs/Path.h>
+#include "geometry_msgs/geometry_msgs.h"
+#include "tf/tf.h"
+#include "nav_msgs/nav_msgs.h"
 
 #include "astar_search/astar_util.h"
 
@@ -62,9 +61,6 @@ private:
   bool calcWaveFrontHeuristic(const SimpleNode& sn);
   bool detectCollisionWaveFront(const WaveFrontNode& sn);
 
-  // ros param
-  ros::NodeHandle n_;
-
   // base configs
   bool use_back_;                 // backward search
   bool use_potential_heuristic_;  // potential cost function
@@ -92,7 +88,7 @@ private:
 
   // hybrid astar variables
   std::vector<std::vector<NodeUpdate>> state_update_table_;
-  std::vector<std::vector<std::vector<aStarNode>>> nodes_;
+  std::vector<std::vector<std::vector<AstarNode>>> nodes_;
   std::priority_queue<SimpleNode, std::vector<SimpleNode>, std::greater<SimpleNode>> openlist_;
   std::vector<SimpleNode> goallist_;
 

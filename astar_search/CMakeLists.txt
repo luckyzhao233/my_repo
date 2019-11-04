@@ -4,8 +4,6 @@ project(astar_search)
 set(CMAKE_CXX_FLAGS "-O2 -Wall ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED COMPONENTS
-  autoware_build_flags
-  autoware_msgs
   geometry_msgs
   pcl_ros
   roscpp

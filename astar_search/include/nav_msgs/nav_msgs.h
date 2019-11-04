@@ -6,14 +6,6 @@
 #include <AutoKernel/ak.h>
 namespace nav_msgs
 {
-    struct Header //std_msgs/Header
-    {
-        Header() : seq(0), stamp(), frame_id()
-        {}
-        uint32_t seq;
-        AK::TTime stamp; //ros::time
-        std::string frame_id;
-    };
     struct MapMetaData //nav_msgs::MapMetaData
     {
         MapMetaData() : map_load_time(), resolution(0.0), width(0), height(0), origin()
@@ -27,15 +19,15 @@ namespace nav_msgs
 
     struct OccupancyGrid //nav_msgs::OccupancyGrid
     {
-        Header header;
+        geometry_msgs::Header header;
         MapMetaData info;
         std::vector<int8_t> data;
     };
 
     struct Path //nav_msgs::Path
     {
-        Header header;
-        geometry_msgs::PoseStamped[] poses;
+        geometry_msgs::Header header;
+        std::vector<geometry_msgs::PoseStamped> poses;
     };    
 }
 

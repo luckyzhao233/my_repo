@@ -41,8 +41,18 @@ namespace tf
         }
     };
 
+    //tf::quaternionMsgToTf
+    static inline void quaternionMsgToTF(const geometry_msgs::Quaternion& msg, Quaternion& bt) 
+    {
+    bt = Quaternion(msg.x, msg.y, msg.z, msg.w); 
+    if (fabs(bt.length2() - 1 ) > QUATERNION_TOLERANCE) 
+        {
+            bt.normalize();
+        }
+    };
+
     //tf::poseTFToMsg
-    static inline void poseTFToMsg(Pose bt, geometry_msgs::Pose msg) 
+    static inline void poseTFToMsg(const Pose& bt, geometry_msgs::Pose& msg) 
     {pointTFToMsg(bt.getOrigin(), msg.position);  quaternionTFToMsg(bt.getRotation(), msg.orientation);};
 
     //tf::poseMsgToTF
@@ -58,6 +68,28 @@ namespace tf
         quaternionTFToMsg(q, q_msg);
         return q_msg;
     };
+
+    //tf::createQuaternionFromYaw
+    static inline Quaternion createQuaternionFromYaw(double yaw)
+    {
+        Quaternion q;
+        q.setRPY(0.0, 0.0, yaw);
+        return q;
+    }
+
+    /** \brief Helper function for getting yaw from a Quaternion */
+    static inline double getYaw(const Quaternion& bt_q){
+    tfScalar useless_pitch, useless_roll, yaw;
+    tf::Matrix3x3(bt_q).getRPY( useless_roll, useless_pitch,yaw);
+    return yaw;
+    }
+
+    /** \brief Helper function for getting yaw from a Quaternion message*/
+    static inline double getYaw(const geometry_msgs::Quaternion& msg_q){
+    Quaternion bt_q;
+    quaternionMsgToTF(msg_q, bt_q);
+    return getYaw(bt_q);
+    }
 }
 
 

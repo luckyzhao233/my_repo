@@ -18,32 +18,27 @@
 
 AstarSearch::AstarSearch()
 {
-  ros::NodeHandle private_nh_("~");
-
   // base configs
-  private_nh_.param<bool>("use_back", use_back_, true);
-  private_nh_.param<bool>("use_potential_heuristic", use_potential_heuristic_, true);
-  private_nh_.param<bool>("use_wavefront_heuristic", use_wavefront_heuristic_, false);
-  private_nh_.param<double>("time_limit", time_limit_, 5000.0);
-
+  use_back_ = true;
+  use_potential_heuristic_= true;
+  use_wavefront_heuristic_= false;
+  time_limit_= 5000.0;
   // robot configs
-  private_nh_.param<double>("robot_length", robot_length_, 4.5);
-  private_nh_.param<double>("robot_width", robot_width_, 1.75);
-  private_nh_.param<double>("robot_base2back", robot_base2back_, 1.0);
-  private_nh_.param<double>("minimum_turning_radius", minimum_turning_radius_, 6.0);
-
+  robot_length_= 4.5;
+  robot_width_= 1.75;
+  robot_base2back_= 1.0;
+  minimum_turning_radius_= 6.0;
   // search configs
-  private_nh_.param<int>("theta_size", theta_size_, 48);
-  private_nh_.param<double>("angle_goal_range", angle_goal_range_, 6.0);
-  private_nh_.param<double>("curve_weight", curve_weight_, 1.2);
-  private_nh_.param<double>("reverse_weight", reverse_weight_, 2.00);
-  private_nh_.param<double>("lateral_goal_range", lateral_goal_range_, 0.5);
-  private_nh_.param<double>("longitudinal_goal_range", longitudinal_goal_range_, 2.0);
-
+  theta_size_= 48;
+  angle_goal_range_= 6.0;
+  curve_weight_= 1.2;
+  reverse_weight_= 2.00;
+  lateral_goal_range_= 0.5;
+  longitudinal_goal_range_= 2.0;
   // costmap configs
-  private_nh_.param<int>("obstacle_threshold", obstacle_threshold_, 100);
-  private_nh_.param<double>("potential_weight", potential_weight_, 10.0);
-  private_nh_.param<double>("distance_heuristic_weight", distance_heuristic_weight_, 1.0);
+  obstacle_threshold_= 100;
+  potential_weight_= 10.0;
+  distance_heuristic_weight_= 1.0;
 
   createStateUpdateTable();
 }
@@ -334,15 +329,15 @@ bool AstarSearch::isOutOfRange(int index_x, int index_y)
 
 bool AstarSearch::search()
 {
-  ros::WallTime begin = ros::WallTime::now();
+  int64_t begin = AK::TTime::System();//nsec
 
   // Start A* search
   // If the openlist is empty, search failed
   while (!openlist_.empty())
   {
     // Check time and terminate if the search reaches the time limit
-    ros::WallTime now = ros::WallTime::now();
-    double msec = (now - begin).toSec() * 1000.0;
+    int64_t now = AK::TTime::System();
+    double msec = (now - begin) / 1000000.0;
     if (msec > time_limit_)
     {
       // ROS_WARN("Exceed time limit of %lf [ms]", time_limit_);
@@ -465,8 +460,8 @@ bool AstarSearch::search()
 
 void AstarSearch::setPath(const SimpleNode& goal)
 {
-  std_msgs::Header header;
-  header.stamp = ros::Time::now();
+  geometry_msgs::Header header;
+  header.stamp = AK::TTime::System();
   header.frame_id = costmap_.header.frame_id;
   path_.header = header;
 

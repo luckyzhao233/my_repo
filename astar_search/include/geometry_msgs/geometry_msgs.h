@@ -11,7 +11,7 @@ namespace geometry_msgs
         Header() : seq(0), stamp(), frame_id()
         {}
         uint32_t seq;
-        AK::TTime stamp; //ros::time
+        int64_t stamp; //ros::time
         std::string frame_id;
     };
 
@@ -23,13 +23,6 @@ namespace geometry_msgs
         double z;
     };
 
-    struct Orientation
-    {
-        double x;
-        double y;
-        double z;
-        double w;
-    };
     struct Quaternion //geometry_msgs::Quaternion
     {
         double x;
@@ -42,7 +35,8 @@ namespace geometry_msgs
     struct Pose //geometry_msgs::Pose
     {
         Point position;
-        Orientation orientation;
+        Quaternion orientation;
+        
     };
 
     struct PoseStamped //geometry_msgs::PoseStamped
