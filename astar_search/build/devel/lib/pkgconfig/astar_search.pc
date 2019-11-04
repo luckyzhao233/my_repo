@@ -1,8 +1,0 @@
-prefix=/home/marvin/Git_repo/astar_search/build/devel
-
-Name: astar_search
-Description: Description of astar_search
-Version: 1.12.0
-Cflags: -I/home/marvin/Git_repo/astar_search/include
-Libs: -L/home/marvin/Git_repo/astar_search/build/devel/lib -lastar_search
-Requires: autoware_msgs geometry_msgs pcl_ros roscpp sensor_msgs tf tf_conversions
